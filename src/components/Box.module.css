@@ -1,0 +1,7 @@
+.boxy{
+    height: 100px;
+    width: 100px;
+    /* background-color: blueviolet; */
+    display: inline-block;
+    margin: 10px;
+}
