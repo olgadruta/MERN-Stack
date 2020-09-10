@@ -1,0 +1,75 @@
+> use my_first_db
+switched to db my_first_db
+> db.createCollection('students')
+{ "ok" : 1 }
+> show collections
+students
+> db.students.insert({name:'Alec', home_state:'California', lucky_number:5, birthday:{month:12, day:25, year:1990}})
+WriteResult({ "nInserted" : 1 })
+> db.students.insert({name:'Amy', home_state:'Washington', lucky_number:15, birthday:{month:10, day:05, year:1992}}) 
+WriteResult({ "nInserted" : 1 })
+> db.students.insert({name:'Felix', home_state:'Washington', lucky_number:25, birthday:{month:09, day:09, year:1994}})
+WriteResult({ "nInserted" : 1 })
+> db.students.insert({name:'Lily', home_state:'Oregon', lucky_number:20, birthday:{month:07, day:15, year:1990}})     
+WriteResult({ "nInserted" : 1 })
+> db.students.insert({name:'Maya', home_state:'Florida', lucky_number:3, birthday:{month:09, day:09, year:1988}})     
+WriteResult({ "nInserted" : 1 })
+> db.students.find()
+{ "_id" : ObjectId("5e6abdb2dd09d6ac7452d612"), "name" : "Alec", "home_state" : "California", "lucky_number" : 5, "birthday" : { "month" : 12, "day" : 25, "year" : 1990 } }
+{ "_id" : ObjectId("5e6abdf2dd09d6ac7452d613"), "name" : "Amy", "home_state" : "Washington", "lucky_number" : 15, "birthday" : { "month" : 10, "day" : 5, "year" : 1992 } }
+{ "_id" : ObjectId("5e6abe1bdd09d6ac7452d614"), "name" : "Felix", "home_state" : "Washington", "lucky_number" : 25, "birthday" : { "month" : 9, "day" : 9, "year" : 1994 } }
+{ "_id" : ObjectId("5e6abe4edd09d6ac7452d615"), "name" : "Lily", "home_state" : "Oregon", "lucky_number" : 20, "birthday" : { "month" : 7, "day" : 15, "year" : 1990 } }
+{ "_id" : ObjectId("5e6abfb9dd09d6ac7452d616"), "name" : "Maya", "home_state" : "Florida", "lucky_number" : 3, "birthday" : { "month" : 9, "day" : 9, "year" : 1988 } }
+> db.students.find({lucky_number: {$gt: 3}})                
+{ "_id" : ObjectId("5e6abdb2dd09d6ac7452d612"), "name" : "Alec", "home_state" : "California", "lucky_number" : 5, "birthday" : { "month" : 12, "day" : 25, "year" : 1990 } }
+{ "_id" : ObjectId("5e6abdf2dd09d6ac7452d613"), "name" : "Amy", "home_state" : "Washington", "lucky_number" : 15, "birthday" : { "month" : 10, "day" : 5, "year" : 1992 } }
+{ "_id" : ObjectId("5e6abe1bdd09d6ac7452d614"), "name" : "Felix", "home_state" : "Washington", "lucky_number" : 25, "birthday" : { "month" : 9, "day" : 9, "year" : 1994 } }
+{ "_id" : ObjectId("5e6abe4edd09d6ac7452d615"), "name" : "Lily", "home_state" : "Oregon", "lucky_number" : 20, "birthday" : { "month" : 7, "day" : 15, "year" : 1990 } }
+> db.students.find({lucky_number: {$lte: 10}})
+{ "_id" : ObjectId("5e6abdb2dd09d6ac7452d612"), "name" : "Alec", "home_state" : "California", "lucky_number" : 5, "birthday" : { "month" : 12, "day" : 25, "year" : 1990 } }
+{ "_id" : ObjectId("5e6abfb9dd09d6ac7452d616"), "name" : "Maya", "home_state" : "Florida", "lucky_number" : 3, "birthday" : { "month" : 9, "day" : 9, "year" : 1988 } }
+> db.students.find({home_state:'California'|| 'Washington'})
+{ "_id" : ObjectId("5e6abdb2dd09d6ac7452d612"), "name" : "Alec", "home_state" : "California", "lucky_number" : 5, "birthday" : { "month" : 12, "day" : 25, "year" : 1990 } }
+> db.students.find({lucky_number:{$gt: 1} && {$lte: 9}})
+{ "_id" : ObjectId("5e6abdb2dd09d6ac7452d612"), "name" : "Alec", "home_state" : "California", "lucky_number" : 5, "birthday" : { "month" : 12, "day" : 25, "year" : 1990 } }
+{ "_id" : ObjectId("5e6abfb9dd09d6ac7452d616"), "name" : "Maya", "home_state" : "Florida", "lucky_number" : 3, "birthday" : { "month" : 9, "day" : 9, "year" : 1988 } }
+> db.students.updateMany({},  {$set: {interests: ['coding', 'brunch', 'MongoDb']}})
+{ "acknowledged" : true, "matchedCount" : 5, "modifiedCount" : 4 }
+> db.students.update({_id: ObjectId("5e6abdb2dd09d6ac7452d612")},{$addToSet: {interests: 'golf'}})  
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.students.update({_id: ObjectId("5e6abdf2dd09d6ac7452d613")}, {$addToSet: {interests: 'coding'}})                           
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 0 })
+> db.students.update({_id: ObjectId("5e6abdf2dd09d6ac7452d613")}, {$addToSet: {interests: 'tennis'}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.students.update({_id: ObjectId("5e6abe1bdd09d6ac7452d614")}, {$addToSet: {interests: 'tennis'}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.students.update({_id: ObjectId("5e6abe4edd09d6ac7452d615")}, {$addToSet: {interests: 'voley'}}) 
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.students.update({_id: ObjectId("5e6abfb9dd09d6ac7452d616")}, {$addToSet: {interests: 'music'}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.students.update({_id: ObjectId("5e6abe4edd09d6ac7452d615")}, {$addToSet: {interests: 'taxes'}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.students.remove({interests: 'taxes'}, true)
+WriteResult({ "nRemoved" : 1 })
+> db.students.remove({home_state: 'California'})
+WriteResult({ "nRemoved" : 1 })
+> db.students.remove({lucky_number: {$gt: 15}})      
+WriteResult({ "nRemoved" : 2 }) //this way it will remove all obj gt 15;
+> db.students.remove({lucky_number: {$gt: 15}}, true)
+WriteResult({ "nRemoved" : 1 })  //it will remove just one obj gt 15;
+> db.students.update({name:'Amy'}, {$set: {number_of_belts: 0}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.students.update({name:'Olga'}, {$set: {number_of_belts: 0}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.students.update({home_state: 'Washington'}, {$inc: {number_of_belts: 1 }})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.students.updateMany({}, {$rename: {number_of_belts: 'belt_earned' }})  
+{ "acknowledged" : true, "matchedCount" : 2, "modifiedCount" : 2 }
+> db.students.updateMany({},  {$unset:{ lucky_number:''}}) 
+{ "acknowledged" : true, "matchedCount" : 2, "modifiedCount" : 2 }
+> db.students.updateMany({}, {$currentDate: {update_at:{$type: 'date'}}})
+{ "acknowledged" : true, "matchedCount" : 2, "modifiedCount" : 2 }
+
+
+
+
